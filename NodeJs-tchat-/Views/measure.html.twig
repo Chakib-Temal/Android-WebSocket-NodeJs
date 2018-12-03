@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Web-Sockett</title>
+        <script src="../public/socket.io.js"></script>
+    </head>
+<body>
+©    <button>click</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            var socket = io.connect("http://192.168.1.14:9999");
+            socket.emit('sendInformationUser', "hello" );
+
+
+            socket.on('broadcasting', function (data) {
+
+            });
+
+            setInterval(function () {
+                socket.emit('getListUsersConnected', "hello");
+            }, 1500);
+
+            socket.on('hello to you too', function (data) {
+                console.log(data);
+
+            });
+
+            socket.on('message', function (data) {
+
+            });
+
+            $('button').click(function () {
+                socket.emit('sendInformationUser', "hello" );
+                console.log("hello");
+            })
+        });
+    </script>
+</body>
+</html>
+
