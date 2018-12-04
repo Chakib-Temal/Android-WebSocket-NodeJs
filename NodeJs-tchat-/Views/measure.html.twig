@@ -5,38 +5,75 @@
         <script src="../public/socket.io.js"></script>
     </head>
 <body>
-©    <button>click</button>
+    <button>click</button>
+    <div id="myChart" class="style1" style="width: 200px; height: 200px"></div>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
 
-            var socket = io.connect("http://192.168.1.14:9999");
-            socket.emit('sendInformationUser', "hello" );
 
+            window.onload = function() {
 
-            socket.on('broadcasting', function (data) {
+                var compter = 0;
 
-            });
-
-            setInterval(function () {
-                socket.emit('getListUsersConnected', "hello");
-            }, 1500);
-
-            socket.on('hello to you too', function (data) {
-                console.log(data);
-
-            });
-
-            socket.on('message', function (data) {
-
-            });
-
-            $('button').click(function () {
+                //var socket = io.connect("http://90.126.249.35:9998");
+                var socket = io.connect("http://192.168.1.14:9999");
                 socket.emit('sendInformationUser', "hello" );
-                console.log("hello");
-            })
+
+
+                socket.on('broadcasting', function (data) {
+
+                });
+
+                var x = 0;
+
+                socket.on('hello to you too', function (data) {
+                    x = parseFloat(data);
+
+                    console.log(data + "  " + typeof x + " " + typeof compter);
+                    addData();
+                });
+
+                socket.on('message', function (data) {
+
+                });
+
+                $('button').click(function () {
+                    socket.emit('sendInformationUser', "hello" );
+                    console.log("hello");
+                })
+
+                var dataPoints = [];
+                var options = {
+                    theme: "light2",
+                    title: {
+                        text: "Live Data"
+                    },
+                    data: [{
+                        type: "line",
+                        dataPoints: dataPoints
+                    }]
+                };
+
+
+
+
+
+                function addData() {
+
+                    dataPoints.push({x: compter, y: (x)});
+                    compter++;
+
+                    $("#chartContainer").CanvasJSChart(options);
+                }
+            }
         });
     </script>
+
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 </body>
 </html>
 
