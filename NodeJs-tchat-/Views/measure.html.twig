@@ -17,7 +17,7 @@
 
                 var compter = 0;
 
-                var socket = io.connect("http://192.168.1.14:9999");
+                var socket = io.connect("http://127.0.0.1:9999");
                 socket.emit('sendInformationUser', "hello" );
 
 
@@ -28,10 +28,20 @@
                 var x = 0;
 
                 socket.on('hello to you too', function (data) {
-                    x = parseFloat(data);
+                    addData(data);
+                    /*
+                    try {
+                        var count = Object.keys(data.accelero).length;
+                        console.log(data.accelero);
 
-                    console.log(data + "  " + typeof x + " " + typeof compter);
-                    addData();
+                        for (var i = 0; i < count ; i++ ){
+                            console.log(data.accelero[i].valueX);
+                        }
+                    }catch (error){
+
+                    }
+                    */
+
                 });
 
                 socket.on('message', function (data) {
@@ -42,6 +52,8 @@
                     socket.emit('sendInformationUser', "hello" );
                     console.log("hello");
                 })
+
+
 
                 var dataPoints = [];
                 var options = {
@@ -55,15 +67,17 @@
                     }]
                 };
 
+                function addData(data) {
+                    try {
+                        var count = Object.keys(data.accelero).length;
 
+                        for (var i = 0; i < count ; i++ ){
+                            dataPoints.push({x: compter, y: data.accelero[i].valueX});
+                            compter++;
+                        }
+                    }catch (error){
 
-
-
-                function addData() {
-
-                    dataPoints.push({x: compter, y: (x)});
-                    compter++;
-
+                    }
                     $("#chartContainer").CanvasJSChart(options);
                 }
             }

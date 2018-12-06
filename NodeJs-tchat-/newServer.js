@@ -38,7 +38,7 @@ io.on('connection', function(socket){
         console.log(data + ' just logged in');
         socket.broadcast.emit('hello to you too',  data);
         //to self
-        socket.emit('hello to you too', "hello to you too " + data);
+        socket.emit('hello to you too', " " + data);
         compter++;
     });
 
